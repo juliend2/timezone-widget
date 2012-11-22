@@ -6,56 +6,56 @@ Author: Julien Desrosiers
 Version: 1.0
 Author URI: http://www.juliendesrosiers.com
 License: MIT
-*/
+ */
 
 
 class TimezoneWidget extends WP_Widget {
 
-	function TimezoneWidget() {
-		$widget_ops = array('classname' => 'widget_tzwidget', 'description' => __('Show the time according to the given time zone'));
-		$control_ops = array('width' => 400, 'height' => 350);
-		$this->WP_Widget('timezone', __('Time Zone'), $widget_ops, $control_ops);
-	}
+  function TimezoneWidget() {
+    $widget_ops = array('classname' => 'widget_tzwidget', 'description' => __('Show the time according to the given time zone'));
+    $control_ops = array('width' => 400, 'height' => 350);
+    $this->WP_Widget('timezone', __('Time Zone'), $widget_ops, $control_ops);
+  }
 
-	function widget( $args, $instance ) {
-		extract($args);
-		$title = apply_filters( 'widget_title', empty($instance['title']) ? '' : $instance['title'], $instance );
-		$zone = apply_filters( 'widget_tzwidget', $instance['zone'], $instance );
-		echo $before_widget;
-		if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 
+  function widget( $args, $instance ) {
+    extract($args);
+    $title = apply_filters( 'widget_title', empty($instance['title']) ? '' : $instance['title'], $instance );
+    $zone = apply_filters( 'widget_tzwidget', $instance['zone'], $instance );
+    echo $before_widget;
+    if ( !empty( $title ) ) { echo $before_title . $title . $after_title; } 
 
-      // on stocke la zone precedente, pour la remettre apres avoir fait notre job
-      $default_zone = date_default_timezone_get();
-      // on set la zone pour la job de notre plugin seulement
-      date_default_timezone_set($zone);
-    ?>			
+    // on stocke la zone precedente, pour la remettre apres avoir fait notre job
+    $default_zone = date_default_timezone_get();
+    // on set la zone pour la job de notre plugin seulement
+    date_default_timezone_set($zone);
+?>			
     <div class="tzwidgetwidget"><?php echo date('r'); ?></div>
-		<?php
-      // on remet la zone qui etait en place avant le passage de notre plugin
-      date_default_timezone_set($default_zone);
+<?php
+    // on remet la zone qui etait en place avant le passage de notre plugin
+    date_default_timezone_set($default_zone);
 
-		echo $after_widget;
-	}
+    echo $after_widget;
+  }
 
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags($new_instance['title']);
+  function update( $new_instance, $old_instance ) {
+    $instance = $old_instance;
+    $instance['title'] = strip_tags($new_instance['title']);
     $instance['zone'] = $new_instance['zone'];
-		return $instance;
-	}
+    return $instance;
+  }
 
   private function selected($zone_name, $current_zone) {
     echo ' value="'.$zone_name.'" '. ($zone_name == $current_zone ? ' selected="selected" ': '');
   }
 
-	function form( $instance ) {
+  function form( $instance ) {
     global $tz_zone_options;
-		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'zone' => '' ) );
-		$title = strip_tags($instance['title']);
+    $instance = wp_parse_args( (array) $instance, array( 'title' => '', 'zone' => '' ) );
+    $title = strip_tags($instance['title']);
     $zone = strip_tags($instance['zone']);
 ?>
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
-		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
+    <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+    <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 
     <p><label for="<?php echo $this->get_field_id('zone'); ?>"><?php _e('Zone:'); ?></label>
     <select id="<?php echo $this->get_field_id('zone'); ?>" name="<?php echo $this->get_field_name('zone'); ?>">
@@ -108,7 +108,7 @@ class TimezoneWidget extends WP_Widget {
     </p>
 
 <?php
-	}
+  }
 
 }
 
